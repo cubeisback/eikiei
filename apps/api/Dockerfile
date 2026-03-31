@@ -1,17 +1,14 @@
-FROM node:22-alpine
+FROM node:22-bookworm
 
 WORKDIR /app
 
-# Установите OpenSSL для Prisma и build tools
-RUN apk add --no-cache openssl python3 make g++
-
-# Копируем package.json
+# Копируем package.json files для кеширования зависимостей
 COPY package*.json ./
-COPY apps/api/package*.json ./apps/api/
 COPY packages ./packages
+COPY apps/api/package*.json ./apps/api/
 
-RUN npm config set registry https://registry.npmjs.org/
-RUN npm install --legacy-peer-deps --force
+RUN npm config set registry https://registry.npmjs.org/ && \
+    npm install --legacy-peer-deps --force
 
 # Копируем ВЕСЬ код (включая prisma)
 COPY . .

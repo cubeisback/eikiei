@@ -69,6 +69,10 @@ services:
             INTERNAL_API_URL: http://api:3001
             WATCHPACK_POLLING: "true"
             CHOKIDAR_USEPOLLING: "true"
+        volumes:
+            - ./apps/web/app:/app/apps/web/app
+            - ./apps/web/public:/app/apps/web/public
+            - ./apps/web/next.config.ts:/app/apps/web/next.config.ts
         dns:
             - 8.8.8.8
             - 1.1.1.1

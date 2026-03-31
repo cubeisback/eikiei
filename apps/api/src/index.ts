@@ -1,8 +1,14 @@
 import "dotenv/config";
 import Fastify from "fastify";
+import cors from "@fastify/cors";
 import { prisma } from "./db";
 
 const fastify = Fastify({ logger: true });
+
+// Register CORS plugin
+await fastify.register(cors, {
+	origin: true,
+});
 
 fastify.get("/health", async () => ({
 	status: "ok",

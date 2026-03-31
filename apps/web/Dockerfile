@@ -1,14 +1,22 @@
-FROM node:22-bookworm
+FROM node:22-alpine
 
 WORKDIR /app
 
-# копируем ВСЁ
-COPY . .
+# Копируем package.json files для кеширования зависимостей
+COPY package*.json ./
+COPY packages ./packages
+COPY apps/web/package*.json ./apps/web/
 
-# Сначала ставим зависимости для корневого project
-RUN npm install --legacy-peer-deps --force
+RUN npm config set registry https://registry.npmjs.org/ && \
+    npm install --legacy-peer-deps --force
 
-# идём в web
+# Копируем конфиги
+COPY apps/web/next.config.ts ./apps/web/
+COPY apps/web/tsconfig.json ./apps/web/
+COPY apps/web/tailwind.config.ts ./apps/web/
+COPY apps/web/postcss.config.mjs ./apps/web/
+COPY apps/web/eslint.config.mjs ./apps/web/
+
 WORKDIR /app/apps/web
 
 EXPOSE 3000
