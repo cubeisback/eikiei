@@ -2,13 +2,13 @@ FROM node:22-bookworm
 
 WORKDIR /app
 
-COPY package*.json ./
-COPY apps/web/package*.json ./apps/web/
-
-RUN npm install
-
+# копируем ВСЁ
 COPY . .
 
+# Сначала ставим зависимости для корневого project
+RUN npm install --legacy-peer-deps --force
+
+# идём в web
 WORKDIR /app/apps/web
 
 EXPOSE 3000

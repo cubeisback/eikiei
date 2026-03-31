@@ -1,15 +1,22 @@
+import "dotenv/config";
 import Fastify from "fastify";
+import { prisma } from "./db";
 
-const fastify = Fastify({
-	logger: true,
-});
+const fastify = Fastify({ logger: true });
 
-fastify.get("/health", async (request, reply) => {
-	return { status: "ok", timestamp: new Date().toISOString() };
-});
-
-fastify.get("/api/ping", async (request, reply) => {
-	return { message: "pong", time: Date.now() };
+fastify.get("/health", async () => ({
+	status: "ok",
+	timestamp: new Date().toISOString(),
+}));
+fastify.get("/api/ping", async () => ({ message: "pong", time: Date.now() }));
+fastify.get("/api/users", async (request, reply) => {
+	try {
+		const users = await prisma.user.findMany();
+		return users;
+	} catch (err) {
+		fastify.log.error(err);
+		return reply.status(500).send({ error: "Internal Server Error" });
+	}
 });
 
 const start = async () => {

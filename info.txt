@@ -64,3 +64,16 @@
 
 
 Помоги начать, нужно настроить минимально рабочий вариант, чтобы был docker, который запускал бы все необходимое. Вначале минимально рабочий api и уже установлен next через create next-app. Не использовать pnpm, только npm. Обязательный hot-reload, и отсутствие пересборки контейнеров каждый раз. Не использовать init.sh
+
+
+
+
+
+На вкладке General:
+Name: eikiei_postgres_local (можно любое)
+На вкладке Connection:
+Host name/address: postgres (имя сервиса из docker-compose.yml)
+Port: 5432
+Username: crm_user
+Password: crm_password
+Maintenance database: crm_db
